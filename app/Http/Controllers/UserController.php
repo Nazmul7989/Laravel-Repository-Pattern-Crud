@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Users\UserCreateRequest;
+use App\Http\Requests\Users\UserUpdateRequest;
+use App\Repositories\Exceptions\UserErrorException;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Http\Request;
 
@@ -21,8 +24,13 @@ class  UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = $this->userRepo->index($request);
-        return view('user',compact('users'));
+        try {
+            $users = $this->userRepo->index($request);
+            return view('user',compact('users'));
+        } catch (\ErrorException $exception){
+            throw new UserErrorException($exception->getMessage(),$exception->getCode());
+        }
+
     }
 
     /**
@@ -32,7 +40,11 @@ class  UserController extends Controller
      */
     public function create()
     {
-        return view('create');
+        try {
+            return view('create');
+        } catch (\ErrorException $exception){
+            throw new UserErrorException($exception->getMessage(),$exception->getCode());
+        }
     }
 
     /**
@@ -41,20 +53,14 @@ class  UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserCreateRequest $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        try {
+            $this->userRepo->store($request);
+            return redirect()->route('user.index');
+        } catch (\ErrorException $exception){
+            throw new UserErrorException($exception->getMessage(),$exception->getCode());
+        }
     }
 
     /**
@@ -65,7 +71,13 @@ class  UserController extends Controller
      */
     public function edit($id)
     {
-        return view('edit');
+        try {
+            $user = $this->userRepo->edit($id);
+            return view('edit',compact('user'));
+        } catch (\ErrorException $exception){
+            throw new UserErrorException($exception->getMessage(),$exception->getCode());
+        }
+
     }
 
     /**
@@ -75,9 +87,14 @@ class  UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserUpdateRequest $request, $id)
     {
-        //
+        try {
+            $this->userRepo->update($request,$id);
+            return redirect()->route('user.index');
+        } catch (\ErrorException $exception){
+            throw new UserErrorException($exception->getMessage(),$exception->getCode());
+        }
     }
 
     /**
@@ -88,6 +105,13 @@ class  UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $user = $this->userRepo->edit($id);
+            $this->userRepo->destroy($user);
+            return redirect()->back();
+
+        } catch (\ErrorException $exception){
+            throw new UserErrorException($exception->getMessage(),$exception->getCode());
+        }
     }
 }

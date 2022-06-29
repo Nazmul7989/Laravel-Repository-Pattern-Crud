@@ -10,22 +10,38 @@
                             <a href="{{ route('user.index') }}" class="btn btn-sm btn-success float-end">User List</a>
                         </div>
                         <hr>
-                        <form action="" method="post">
+{{--                        @if ($errors->any())--}}
+{{--                            <div class="alert alert-danger">--}}
+{{--                                <ul>--}}
+{{--                                    @foreach ($errors->all() as $error)--}}
+{{--                                        <li>{{ $error }}</li>--}}
+{{--                                    @endforeach--}}
+{{--                                </ul>--}}
+{{--                            </div>--}}
+{{--                        @endif--}}
+                        <form action="{{ route('user.update',$user->id) }}" method="post">
+                            @csrf
+
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name</label>
-                                <input type="text" class="form-control" name="name" id="name">
+                                <input type="text" class="form-control" value="{{ $user->name }}" name="name" id="name">
+                                <div style='color:red; padding: 0 5px;'>{{($errors->has('name'))?($errors->first('name')):''}}</div>
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email address</label>
-                                <input type="email" class="form-control" id="email" name="email">
+                                <input type="email" class="form-control" value="{{ $user->email }}" id="email" name="email">
+                                <div style='color:red; padding: 0 5px;'>{{($errors->has('email'))?($errors->first('email')):''}}</div>
                             </div>
                             <div class="mb-3">
                                 <label for="phone" class="form-label">Phone</label>
-                                <input type="text" class="form-control" id="phone">
+                                <input type="text" class="form-control" value="{{ $user->phone }}" name="phone" id="phone">
+                                <div style='color:red; padding: 0 5px;'>{{($errors->has('phone'))?($errors->first('phone')):''}}</div>
                             </div>
+
                             <div class="mb-3">
                                 <label for="address" class="form-label">Address</label>
-                                <textarea name="address" id="address" class="form-control" cols="30" rows="4"></textarea>
+                                <textarea name="address" id="address" class="form-control" cols="30" rows="4">{{ $user->address }}</textarea>
+                                <div style='color:red; padding: 0 5px;'>{{($errors->has('address'))?($errors->first('address')):''}}</div>
                             </div>
                             <button type="submit" class="btn btn-sm btn-success">Update</button>
                         </form>

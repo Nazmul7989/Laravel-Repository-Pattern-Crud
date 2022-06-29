@@ -31,7 +31,7 @@
                                 <td>{{ $user->address }}</td>
                                 <td>
                                     <a href="{{ route('user.edit',$user->id) }}" class="btn btn-sm btn-success">Edit</a>
-                                    <a href="{{ route('user.delete',$user->id) }}" class="btn btn-sm btn-danger">Delete</a>
+                                    <a href="{{ route('user.delete',$user->id) }}" onclick="return confirm('Do you want to Delete?')" class="btn btn-sm btn-danger">Delete</a>
                                 </td>
                             </tr>
                             @endforeach
