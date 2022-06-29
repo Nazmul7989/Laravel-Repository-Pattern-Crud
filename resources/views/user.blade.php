@@ -22,28 +22,19 @@
                             </tr>
                             </thead>
                             <tbody>
+                            @foreach($users as $user)
                             <tr>
-                                <th scope="row">1</th>
-                                <td>Md Nazmul Hasan</td>
-                                <td>nazmul@gmail.com</td>
-                                <td>0193237283</td>
-                                <td>Jhenaidah,Bangladesh</td>
+                                <th scope="row">{{ $loop->iteration }}</th>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->email }}</td>
+                                <td>{{ $user->phone }}</td>
+                                <td>{{ $user->address }}</td>
                                 <td>
-                                    <button class="btn btn-sm btn-success">Edit</button>
-                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                    <a href="{{ route('user.edit',$user->id) }}" class="btn btn-sm btn-success">Edit</a>
+                                    <a href="{{ route('user.delete',$user->id) }}" class="btn btn-sm btn-danger">Delete</a>
                                 </td>
                             </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Md Razib Hasan</td>
-                                <td>razib@gmail.com</td>
-                                <td>0173343345</td>
-                                <td>Dhaka,Bangladesh</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success">Edit</button>
-                                    <button class="btn btn-sm btn-danger">Delete</button>
-                                </td>
-                            </tr>
+                            @endforeach
 
                             </tbody>
                         </table>

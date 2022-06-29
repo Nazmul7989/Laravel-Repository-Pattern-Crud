@@ -2,18 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Http\Request;
 
 class  UserController extends Controller
 {
+    private $userRepo;
+
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
+        $this->userRepo = $userRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('user');
+        $users = $this->userRepo->index($request);
+        return view('user',compact('users'));
     }
 
     /**
